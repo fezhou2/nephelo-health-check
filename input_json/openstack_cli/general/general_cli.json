@@ -1,0 +1,126 @@
+{ "tests": [
+      {
+          "name": "keystone discover",
+          "type": "cli",
+          "command": "keystone discover",
+          "condition": "match",
+          "pattern": "supports version v2.",
+          "remedy": "Check keystone environment",
+          "severity": "critical"
+      },
+      {
+          "name": "upload-image",
+          "type": "cli",
+          "command": "glance image-create --name nephelo-ubunty-trusty-14.04 --disk-format qcow2 --container-format bare --file images/trusty-server-cloudimg-i386-disk1.img",
+          "condition": "match",
+          "pattern": [
+              "| name             | nephelo-ubunty-trusty-14.04    ",
+              "| status           | active     "
+          ],
+          "remedy": "Check glance for image upload",
+          "severity": "critical"
+      },
+      {
+          "name": "find flavor",
+          "type": "cli",
+          "command": "nova flavor-list  ",
+          "condition": "match",
+          "pattern": "m1.medium",
+          "remedy": "Check nova for flavor creation",
+          "severity": "critical"
+      },
+      {
+          "name": "volume create",
+          "type": "cli",
+          "command": "cinder create blahblah",
+          "condition": "succeed",
+          "verify": "verify-command",
+          "remedy": "Check cinder for volume creation",
+          "severity": "critical"
+      },
+      {
+          "name": "network create",
+          "type": "cli",
+          "command": "network create blahblah",
+          "condition": "succeed",
+          "verify": "verify-command",
+          "remedy": "Check neutron for network creation",
+          "severity": "critical"
+      },
+      {
+          "name": "subnet create",
+          "type": "cli",
+          "command": "subnet create blahblah",
+          "condition": "succeed",
+          "verify": "verify-command",
+          "remedy": "Check neutron for subnet creation",
+          "severity": "critical"
+      },
+      {
+          "name": "router create",
+          "type": "cli",
+          "command": "router create blahblah",
+          "condition": "succeed",
+          "verify": "verify-command",
+          "remedy": "Check neutron for router creation",
+          "severity": "critical"
+      },
+      {
+          "name": "secgroup create",
+          "type": "cli",
+          "command": "nova secgroup create blahblah",
+          "condition": "succeed",
+          "verify": "verify-command",
+          "remedy": "Check nova for secgroup creation",
+          "severity": "critical"
+      },
+      {
+          "name": "keypair create",
+          "type": "cli",
+          "command": "nova keypair create blahblah",
+          "condition": "succeed",
+          "verify": "verify-command",
+          "remedy": "Check nova for keypair creation",
+          "severity": "critical"
+      },
+      {
+          "name": "vm create",
+          "type": "cli",
+          "command": "nova boot blahblah - using image, volume, network/subnet, router, secgroup and keypair above",
+          "condition": "succeed",
+          "verify": "verify-command",
+          "remedy": "Check nova for VM creation",
+          "severity": "critical"
+      },
+      {
+          "name": "check VM network",
+          "type": "cli",
+          "remote": "ssh:vm-name",
+          "command": "ping octl-IP",
+          "condition": "match",
+          "verify": "  bytes from ",
+          "remedy": "Check VM for network connectivity",
+          "severity": "critical"
+      },
+      {
+          "name": "check VM disk",
+          "type": "cli",
+          "remote": "ssh:vm-name",
+          "command": "dd if=/dev/zero of=/tmp/junk bs=32k count=32768",
+          "condition": "match",
+          "verify": "  bytes transferred in ",
+          "remedy": "Check VM for disk I/O",
+          "severity": "critical"
+      },
+      {
+          "name": "cleanup openstack objs",
+          "type": "internal",
+          "command": "openstack-cleanup",
+          "condition": "succeed",
+          "remedy": "Check for leftover objects in openstack",
+          "severity": "critical"
+      }
+    ],
+    "component": "openstack_cli",
+    "environment": "staging"
+}

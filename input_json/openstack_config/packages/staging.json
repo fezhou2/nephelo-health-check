@@ -1,0 +1,44 @@
+{ 
+   "tests": [
+      {
+          "condition": "exist",
+          "name": "libcrypto library",
+          "files": "/usr/lib64/libcrypto.so.1.0.0",
+          "remedy": "Run ln -s libcrypto.so.10 /usr/lib64/libcrypto.so.1.0.0",
+          "severity": "critical",
+          "type": "file"
+      },
+      {
+          "condition": ["loaded", "active", "running"],
+          "name": "confd service check",
+          "services": "confd.service",
+          "remedy": "Install confd package and start confd.service",
+          "severity": "critical",
+          "type": "service"
+      },
+      {
+          "condition": "installed",
+          "name":  "pre-install RPM requirements",
+          "packages":  [
+              "pyxdg",
+              "iscsi-initiator-utils",
+              "python-neutronclient",
+              "python-openstackclient",
+              "python-networkx",
+              "python-requests",
+              "libguestfs-tools",
+              "python-libguestfs",
+              "libguestfs",
+              "python-jinja2",
+              "unzip",
+              "expect",
+              "multitail"
+          ],
+          "remedy": "Install missing RPM packages via yum",
+          "severity": "critical",
+          "type": "package"
+      }
+    ],
+    "component": "openstack_config",
+    "environment": "staging"
+}

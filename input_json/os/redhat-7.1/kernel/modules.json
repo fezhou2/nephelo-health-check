@@ -1,0 +1,19 @@
+{  "tests": [
+       {   "name":  "kvm module",
+           "type": "shell",
+           "command":   "sudo lsmod | grep kvm",
+           "pattern":   "kvm ",
+           "condition":  "match",
+           "severity":  "critical"
+       },
+       {   "name":  "vfio module",
+           "type": "shell",
+           "command":  "sudo lsmod | grep vfio",
+           "pattern":   "vfio_pci  ",
+           "condition":  "match",
+           "severity":  "critical"
+       }
+   ],
+   "component":  "vPC-support",
+   "environment": "compute"
+}

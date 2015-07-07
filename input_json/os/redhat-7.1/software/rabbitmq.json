@@ -1,0 +1,21 @@
+{ "tests":  [ 
+       {   "type": "package",
+           "name":  "rabbitmq package",
+           "packages": "rabbitmq-server-3*",
+           "condition":  "installed",
+           "severity":  "critical"
+       },
+       {   "type": "service",
+           "name":   "rabbitmq service",
+           "services": "rabbitmq-server.service",
+           "condition":  [
+               "loaded",
+               "active",
+               "running"
+           ],
+           "severity":  "critical"
+       }
+   ],
+   "component":  "OS",
+   "environment": "controller"
+}

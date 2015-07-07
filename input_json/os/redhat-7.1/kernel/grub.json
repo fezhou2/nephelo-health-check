@@ -1,0 +1,18 @@
+{ "tests": [
+       {   "type": "file",
+           "name": "grub conf file",
+           "files":   [ 
+               "/etc/default/grub",
+               "/boot/grub2/grub.cfg"
+           ],
+           "patterns":   [
+               "iommu=on",
+               "pci-stub.ids="
+           ],
+           "condition":  "match",
+           "severity":  "critical"
+       }
+   ],
+   "component":  "vPC-support",
+   "environment": "compute"
+}

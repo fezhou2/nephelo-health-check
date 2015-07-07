@@ -1,0 +1,11 @@
+component: all
+environment: staging,compute
+compute: localhost
+controller: localhost
+staging: localhost
+ssh_user: luser
+ssh_password: luser
+openstack_source_file: ~/keystonerc_admin
+test_input_folder:  input_json
+test_output_folder:  output_json
+test_timeout:  600
