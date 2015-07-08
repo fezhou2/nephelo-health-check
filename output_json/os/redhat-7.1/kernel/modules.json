@@ -1,4 +1,21 @@
 {
     "context": "os/redhat-7.1/kernel/modules.json",
-    "results": []
+    "results": [
+        {
+            "name": "kvm module",
+            "output": "kvm_intel             148081  0 \nkvm                   461126  1 kvm_intel\n",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 0,
+            "type": "shell"
+        },
+        {
+            "name": "vfio module",
+            "output": "",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 1,
+            "type": "shell"
+        }
+    ]
 }

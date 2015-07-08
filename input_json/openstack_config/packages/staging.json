@@ -19,7 +19,7 @@
       {
           "condition": "installed",
           "name":  "pre-install RPM requirements",
-          "packages":  [
+          "rpm-packages":  [
               "pyxdg",
               "iscsi-initiator-utils",
               "python-neutronclient",

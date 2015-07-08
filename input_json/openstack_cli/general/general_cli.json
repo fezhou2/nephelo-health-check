@@ -32,45 +32,60 @@
       {
           "name": "volume create",
           "type": "cli",
-          "command": "cinder create blahblah",
-          "condition": "succeed",
-          "verify": "verify-command",
+          "command": "cinder create  --display-name nephelo-test  2",
+          "condition": "verify",
+          "verify": "sleep 5; cinder list",
+          "pattern": "available | nephelo-test ",
           "remedy": "Check cinder for volume creation",
           "severity": "critical"
       },
       {
           "name": "network create",
           "type": "cli",
-          "command": "network create blahblah",
-          "condition": "succeed",
-          "verify": "verify-command",
+          "command": "neutron net-create nephelo-test-net",
+          "condition": "match",
+          "pattern": [
+              "| name            | nephelo-test-net                     |",
+              "| status          | ACTIVE  "
+          ],
           "remedy": "Check neutron for network creation",
           "severity": "critical"
       },
       {
           "name": "subnet create",
           "type": "cli",
-          "command": "subnet create blahblah",
-          "condition": "succeed",
-          "verify": "verify-command",
+          "command": "neutron  subnet-create  --name nephelo-test-subnet nephelo-test-net 192.168.101.0/24",
+          "condition": "match",
+          "pattern": [
+              "| cidr              | 192.168.101.0/24     ",
+              "| name              | nephelo-test-subnet"
+          ],
           "remedy": "Check neutron for subnet creation",
           "severity": "critical"
       },
       {
           "name": "router create",
           "type": "cli",
-          "command": "router create blahblah",
-          "condition": "succeed",
-          "verify": "verify-command",
+          "command": "neutron  router-create nephelo-test-router",
+          "condition": "verify",
+          "verify": "neutron router-interface-add nephelo-test-router nephelo-test-subnet",
+          "pattern": [
+              "Added interface",
+              "to router nephelo-test-router"
+          ],
           "remedy": "Check neutron for router creation",
           "severity": "critical"
       },
       {
           "name": "secgroup create",
           "type": "cli",
-          "command": "nova secgroup create blahblah",
-          "condition": "succeed",
-          "verify": "verify-command",
+          "command": "nova secgroup-create nephelo-test-secgroup 'testing security group' && nova secgroup-add-rule nephelo-test-secgroup icmp -1 -1 0.0.0.0/0 && nova secgroup-add-rule nephelo-test-secgroup tcp 22 22 0.0.0.0/0",
+          "condition": "verify",
+          "verify": "nova secgroup-list-rules nephelo-test-secgroup ",
+          "pattern": [
+              "| tcp         | 22        | 22      | 0.0.0.0/0 | ",
+              "| icmp        | -1        | -1      | 0.0.0.0/0 "
+          ],
           "remedy": "Check nova for secgroup creation",
           "severity": "critical"
       },
@@ -110,14 +125,6 @@
           "condition": "match",
           "verify": "  bytes transferred in ",
           "remedy": "Check VM for disk I/O",
-          "severity": "critical"
-      },
-      {
-          "name": "cleanup openstack objs",
-          "type": "internal",
-          "command": "openstack-cleanup",
-          "condition": "succeed",
-          "remedy": "Check for leftover objects in openstack",
           "severity": "critical"
       }
     ],

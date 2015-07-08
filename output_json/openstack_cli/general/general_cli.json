@@ -1,4 +1,101 @@
 {
     "context": "openstack_cli/general/general_cli.json",
-    "results": []
+    "results": [
+        {
+            "name": "keystone discover",
+            "output": "Keystone found at http://172.28.185.27:5000/v2.0/\n    - supports version v2.0 (stable) here http://172.28.185.27:5000/v2.0/\n        - and OS-REVOKE: OpenStack Revoke API\n        - and OS-FEDERATION: OpenStack Federation APIs\n        - and OS-KSCRUD: OpenStack Keystone User CRUD\n        - and OS-EC2: OpenStack EC2 API\n        - and OS-SIMPLE-CERT: OpenStack Simple Certificate API\n",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 0,
+            "type": "cli"
+        },
+        {
+            "name": "upload-image",
+            "output": "+------------------+--------------------------------------+\n| Property         | Value                                |\n+------------------+--------------------------------------+\n| checksum         | 521d25d62d58dc40d88bdf8b2a46df4e     |\n| container_format | bare                                 |\n| created_at       | 2015-07-08T23:19:32                  |\n| deleted          | False                                |\n| deleted_at       | None                                 |\n| disk_format      | qcow2                                |\n| id               | 17822b33-d037-45c1-a830-5474bcd9bfb2 |\n| is_public        | False                                |\n| min_disk         | 0                                    |\n| min_ram          | 0                                    |\n| name             | nephelo-ubunty-trusty-14.04          |\n| owner            | 69b42bf7279c4b329d63faa4158ff73c     |\n| protected        | False                                |\n| size             | 254018048                            |\n| status           | active                               |\n| updated_at       | 2015-07-08T23:19:33                  |\n| virtual_size     | None                                 |\n+------------------+--------------------------------------+\n",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 0,
+            "type": "cli"
+        },
+        {
+            "name": "find flavor",
+            "output": "+----+-----------+-----------+------+-----------+------+-------+-------------+-----------+\n| ID | Name      | Memory_MB | Disk | Ephemeral | Swap | VCPUs | RXTX_Factor | Is_Public |\n+----+-----------+-----------+------+-----------+------+-------+-------------+-----------+\n| 1  | m1.tiny   | 512       | 1    | 0         |      | 1     | 1.0         | True      |\n| 2  | m1.small  | 2048      | 20   | 0         |      | 1     | 1.0         | True      |\n| 3  | m1.medium | 4096      | 40   | 0         |      | 2     | 1.0         | True      |\n| 4  | m1.large  | 8192      | 80   | 0         |      | 4     | 1.0         | True      |\n| 5  | m1.xlarge | 16384     | 160  | 0         |      | 8     | 1.0         | True      |\n+----+-----------+-----------+------+-----------+------+-------+-------------+-----------+\n",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 0,
+            "type": "cli"
+        },
+        {
+            "name": "volume create",
+            "output": "+---------------------+--------------------------------------+\n|       Property      |                Value                 |\n+---------------------+--------------------------------------+\n|     attachments     |                  []                  |\n|  availability_zone  |                 nova                 |\n|       bootable      |                false                 |\n|      created_at     |      2015-07-08T23:19:34.091442      |\n| display_description |                 None                 |\n|     display_name    |             nephelo-test             |\n|      encrypted      |                False                 |\n|          id         | 91bbf3cf-6c73-465a-8de6-bebe87390b0e |\n|       metadata      |                  {}                  |\n|         size        |                  2                   |\n|     snapshot_id     |                 None                 |\n|     source_volid    |                 None                 |\n|        status       |               creating               |\n|     volume_type     |                 None                 |\n+---------------------+--------------------------------------+\n",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 0,
+            "type": "cli"
+        },
+        {
+            "name": "network create",
+            "output": "Created a new network:\n+-----------------+--------------------------------------+\n| Field           | Value                                |\n+-----------------+--------------------------------------+\n| admin_state_up  | True                                 |\n| id              | bf8e9d8f-91f9-408c-894f-4c27c3ed11f4 |\n| name            | nephelo-test-net                     |\n| router:external | False                                |\n| shared          | False                                |\n| status          | ACTIVE                               |\n| subnets         |                                      |\n| tenant_id       | 69b42bf7279c4b329d63faa4158ff73c     |\n+-----------------+--------------------------------------+\n",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 0,
+            "type": "cli"
+        },
+        {
+            "name": "subnet create",
+            "output": "Created a new subnet:\n+-------------------+------------------------------------------------------+\n| Field             | Value                                                |\n+-------------------+------------------------------------------------------+\n| allocation_pools  | {\"start\": \"192.168.101.2\", \"end\": \"192.168.101.254\"} |\n| cidr              | 192.168.101.0/24                                     |\n| dns_nameservers   |                                                      |\n| enable_dhcp       | True                                                 |\n| gateway_ip        | 192.168.101.1                                        |\n| host_routes       |                                                      |\n| id                | 9d4f7259-f856-4535-81ca-083fe5c73e47                 |\n| ip_version        | 4                                                    |\n| ipv6_address_mode |                                                      |\n| ipv6_ra_mode      |                                                      |\n| name              | nephelo-test-subnet                                  |\n| network_id        | bf8e9d8f-91f9-408c-894f-4c27c3ed11f4                 |\n| tenant_id         | 69b42bf7279c4b329d63faa4158ff73c                     |\n+-------------------+------------------------------------------------------+\n",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 0,
+            "type": "cli"
+        },
+        {
+            "name": "router create",
+            "output": "Created a new router:\n+-----------------------+--------------------------------------+\n| Field                 | Value                                |\n+-----------------------+--------------------------------------+\n| admin_state_up        | True                                 |\n| external_gateway_info |                                      |\n| id                    | 4d40c739-e231-476d-b7bd-5130299f9e8e |\n| name                  | nephelo-test-router                  |\n| routes                |                                      |\n| status                | ACTIVE                               |\n| tenant_id             | 69b42bf7279c4b329d63faa4158ff73c     |\n+-----------------------+--------------------------------------+\n",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 0,
+            "type": "cli"
+        },
+        {
+            "name": "secgroup create",
+            "output": "+--------------------------------------+-----------------------+------------------------+\n| Id                                   | Name                  | Description            |\n+--------------------------------------+-----------------------+------------------------+\n| cb26ee06-d0ec-403e-9c51-8ff74abc77c0 | nephelo-test-secgroup | testing security group |\n+--------------------------------------+-----------------------+------------------------+\n+-------------+-----------+---------+-----------+--------------+\n| IP Protocol | From Port | To Port | IP Range  | Source Group |\n+-------------+-----------+---------+-----------+--------------+\n| icmp        | -1        | -1      | 0.0.0.0/0 |              |\n+-------------+-----------+---------+-----------+--------------+\n+-------------+-----------+---------+-----------+--------------+\n| IP Protocol | From Port | To Port | IP Range  | Source Group |\n+-------------+-----------+---------+-----------+--------------+\n| tcp         | 22        | 22      | 0.0.0.0/0 |              |\n+-------------+-----------+---------+-----------+--------------+\n",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 0,
+            "type": "cli"
+        },
+        {
+            "name": "keypair create",
+            "output": "",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 1,
+            "type": "cli"
+        },
+        {
+            "name": "vm create",
+            "output": "",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 1,
+            "type": "cli"
+        },
+        {
+            "name": "check VM network",
+            "output": "",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 1,
+            "type": "cli"
+        },
+        {
+            "name": "check VM disk",
+            "output": "",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 1,
+            "type": "cli"
+        }
+    ]
 }

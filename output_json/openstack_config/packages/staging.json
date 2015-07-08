@@ -1,4 +1,27 @@
 {
     "context": "openstack_config/packages/staging.json",
-    "results": []
+    "results": [
+        {
+            "name": "libcrypto library",
+            "output": "The following files are missing: /usr/lib64/libcrypto.so.1.0.0",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 1,
+            "type": "file"
+        },
+        {
+            "name": "confd service check",
+            "server": "localhost",
+            "severity": "critical",
+            "type": "service"
+        },
+        {
+            "name": "pre-install RPM requirements",
+            "output": "The following packages are missing: pyxdg, libguestfs-tools, expect, multitail",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 4,
+            "type": "package"
+        }
+    ]
 }

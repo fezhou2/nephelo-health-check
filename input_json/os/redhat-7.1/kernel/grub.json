@@ -5,7 +5,7 @@
                "/etc/default/grub",
                "/boot/grub2/grub.cfg"
            ],
-           "patterns":   [
+           "pattern":   [
                "iommu=on",
                "pci-stub.ids="
            ],

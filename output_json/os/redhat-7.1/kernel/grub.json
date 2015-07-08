@@ -1,4 +1,13 @@
 {
     "context": "os/redhat-7.1/kernel/grub.json",
-    "results": []
+    "results": [
+        {
+            "name": "grub conf file",
+            "output": "The following files are bad: /boot/grub2/grub.cfg, /etc/default/grub",
+            "server": "localhost",
+            "severity": "critical",
+            "status": 1,
+            "type": "file"
+        }
+    ]
 }

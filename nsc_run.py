@@ -9,11 +9,12 @@ from pprint import pprint
 import os
 import subprocess
 from shutil import copy as copy_file
-from test_handler import cli_check, shell_check
+from test_handler import cli_check,package_check,file_check
 
 _DEFAULT_TEST_TIMEOUT=300
 _DEFAULT_TEST_RESULT_DIR = "./test_results_json"
 _DEFAULT_TEST_INPUT_DIR = "./test_input_data"
+OS_TYPE ='redhat'
 
 user_input_ds={}
 
@@ -62,40 +63,48 @@ def get_server_list(environment):
 
     return server_list
 
+def run_openstack_cleanup(cleanupscript="./scripts/delete_openstack_objs.sh"):
+    #run openstack_cleanup
+    os.system("source "+user_input_ds['openstack_source_file']+"&& "+cleanupscript +" 2>&1 >/dev/null")
+
+
 def checktask(task, server, results, timeout):
     '''generic checker - check json data task on server and decide the actual test to run'''
-    out={}
+    print "\n==============================================================="
+    out = {"name": task["name"], "type": task["type"], "server": server, "severity": task["severity"]}
 
-    if task["type"].lower()=='shell':
-        out = shell_check(task, server, user_input_ds, timeout)
-    elif task["type"].lower()=='cli':
-        out = cli_check(task, server, user_input_ds, timeout)
+    print "running check:  {},  type: {}".format(task["name"], task["type"])
 
-    out += {"name": task["name"], "type": task["type"], "server": server}
+    if task["type"].lower()=='shell' or task["type"].lower()=='cli':
+        cli_check(task, server, out, user_input_ds, timeout)
+    elif task["type"].lower()=='package':
+        package_check(task, server, OS_TYPE, out, timeout)
+    elif task["type"].lower()=='file':
+        file_check(task, server, out, timeout)
 
     results.append(out)
+    
     return out['status']
 
-def execute_test(json_in, json_out, timeout):
+def execute_test(json_in, timeout):
     '''execute test based on json_in data, dump results into json_out'''
 
-    json_out['context'] = json_in['context']
-    json_out['results'] = []
-    test_status=0
-
+    json_out={'context': json_in['context'], 'results': []}
     server_list = get_server_list(json_in['environment'])
 
     '''execute each test, return status and append test results'''
     for task in json_in['tests']:
         for server in server_list:
             '''return status is the biggest of each test status, ok=0, warn=1, crit=2'''
-            #print "executing task {} on server {}\n".format(task, server)
             try:
-                test_status = max(checktask(task, server, json_out['results'], timeout), test_status)
+                checktask(task, server, json_out['results'], timeout)
             except Exception:
                 pass
 
-    return test_status
+    ''' get result data and write output json file'''
+    write_test_results(json_out) 
+
+    return json_out
 
 def sort_tests(test_ds, by_component=1, by_environment=0):
     '''sort tests either by component or by environment so we can execute in sequence'''
@@ -145,16 +154,18 @@ def select_tests(test_data_ds):
     #pprint(actual_tests_ds)
     return actual_tests_ds
     
-def write_test_results(outdata, outdir=_DEFAULT_TEST_RESULT_DIR):
+def write_test_results(outdata):
     '''write output json into a file for test'''
 
     if 'test_output_folder' in user_input_ds.keys():
         outdir = user_input_ds['test_output_folder']
+    else:
+        outdir = _DEFAULT_TEST_RESULT_DIR
+
     filename = outdir+"/"+outdata['context']
 
     with open(filename, 'w') as outfile:
-        json.dump(outdata, outfile, separators=(',', ': '), sort_keys=True,
-                  indent=4)
+        json.dump(outdata, outfile, separators=(',', ': '), sort_keys=True, indent=4)
     outfile.close() 
 
 def setup_openstack_auth():
@@ -171,6 +182,17 @@ def setup_openstack_auth():
 def setup_ssh_auth(user, password):
     '''setup ssh auth account info'''
 
+def check_os_type():
+    '''find out if we are redhat on ubuntu Linux'''
+
+    text=subprocess.Popen('cat /proc/version*', shell=True, stdout=subprocess.PIPE).stdout.read()
+    if re.search("Red Hat", text):
+        OS_TYPE ='redhat'
+    elif re.search("Ubuntu", text):
+        OS_TYPE ='ubuntu'
+
+    print "the OS type is {}".format(OS_TYPE)
+
 def test_scheduler(tests_ds, test_timeout=_DEFAULT_TEST_TIMEOUT, nproc = 1):
     '''execute each test, keep going until finished all'''
     '''future improvement: launch tests in parallel with nproc at a time'''
@@ -178,23 +200,27 @@ def test_scheduler(tests_ds, test_timeout=_DEFAULT_TEST_TIMEOUT, nproc = 1):
     if 'test_timeout' in user_input_ds.keys():
         test_timeout=user_input_ds['test_timeout']
 
+    ''' figure out our OS (redhat or ubuntu)'''
+    check_os_type()
     ''' setup openstack CLI auth'''
     setup_openstack_auth()
     ''' setup ssh user auth info'''
     setup_ssh_auth(user_input_ds['ssh_user'], user_input_ds['ssh_password'])
 
     out_data_ds = []
-    out_data = {}
+
+    print "\nCleaning up openstack tenant environment\n"
+
+    run_openstack_cleanup() 
 
     for test in tests_ds:
         ''' now run the test'''
         try:
-            result=execute_test(test,out_data,test_timeout)  
+            out_data_ds.append(execute_test(test, test_timeout))  
         except Exception:
             pass
-        ''' get result data and write output json file'''
-        write_test_results(out_data, user_input_ds['test_output_folder']) 
-        out_data_ds.append(out_data)
+
+    run_openstack_cleanup() 
 
     return out_data_ds
 
