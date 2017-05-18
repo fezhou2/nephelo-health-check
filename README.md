@@ -1,3 +1,3 @@
 # Platform-health-check
 
-A python configuration checker for openstack cloud based app (developed in Cisco)
+A python configuration checker for openstack cloud based app
